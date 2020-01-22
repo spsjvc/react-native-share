@@ -20,15 +20,19 @@ public class ShareFile {
     private String url;
     private Uri uri;
     private String type;
+    private String name;
 
-    public ShareFile(String url, String type, ReactApplicationContext reactContext){
-        this(url, reactContext);
+    public ShareFile(String url, String type, String name, ReactApplicationContext reactContext){
+        this(url, name, reactContext);
+
         this.type = type;
+        this.name = name;
     }
 
-    public ShareFile(String url, ReactApplicationContext reactContext){
+    public ShareFile(String url, String name, ReactApplicationContext reactContext){
         this.url = url;
         this.uri = Uri.parse(this.url);
+        this.name = name;
         this.reactContext = reactContext;
     }
     /**
@@ -109,7 +113,7 @@ public class ShareFile {
                 if (!dir.exists() && !dir.mkdirs()) {
                     throw new IOException("mkdirs failed on " + dir.getAbsolutePath());
                 }
-                File file = new File(dir, System.nanoTime() + "." + extension);
+                File file = new File(dir, this.name + "." + extension);
                 final FileOutputStream fos = new FileOutputStream(file);
                 fos.write(Base64.decode(encodedImg, Base64.DEFAULT));
                 fos.flush();
